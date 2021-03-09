@@ -1,0 +1,61 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "29.0.3"
+
+    defaultConfig {
+        applicationId "com.thalesgroup.gemalto.fido2.sample"
+        minSdkVersion 22
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // set your safetyNetAttestationKey in your local global gradle.properties
+        resValue "string", "safetynet_attestation_key", project.hasProperty('safetyNetAttestationKey') ? safetyNetAttestationKey : ""
+
+         ndk {
+            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+        }
+    }
+
+
+    buildTypes {
+        debug {
+
+        }
+
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+   compileOptions {
+       sourceCompatibility 1.8
+       targetCompatibility 1.8
+   }
+
+   lintOptions {
+       checkReleaseBuilds false
+       abortOnError false
+   }
+}
+
+dependencies {
+    implementation 'net.java.dev.jna:jna:5.5.0@aar'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.3.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+
+    implementation "androidx.biometric:biometric:1.1.0"
+    implementation 'com.google.android.gms:play-services-fido:18.1.0'
+    implementation 'com.google.android.gms:play-services-safetynet:17.0.0'
+    implementation 'androidx.navigation:navigation-fragment:2.3.3'
+    implementation 'androidx.navigation:navigation-ui:2.3.3'
+    implementation 'androidx.preference:preference:1.1.1'
+
+}

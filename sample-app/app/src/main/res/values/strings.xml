@@ -1,0 +1,76 @@
+<resources>
+    <string name="app_name">FIDO Sample</string>
+    <string name="registration">Register</string>
+    <string name="authentication">Authenticate</string>
+    <string name="home">Home</string>
+    <string name="settings">Settings</string>
+
+    <string name="register_input_alert_title">Enter Username</string>
+    <string name="register_alert_title">Registration</string>
+    <string name="register_alert_message">You have been registered successfully.</string>
+
+    <string name="authenticate_alert_title">Authentication</string>
+    <string name="authenticate_alert_message">You have been authenticated successfully.</string>
+    <string name="authenticate_alert_message_no_registration">No authenticators registered.</string>
+
+    <string name="error_alert_title">Error</string>
+
+    <!-- Settings Key & Strings -->
+
+    <string name="fido2_sample_pref_auth_title">Authenticators</string>
+    <string name="fido2_sample_reg_authenticator_key">registered_authenticators</string>
+    <string name="fido2_sample_reg_authenticator_title">Registered authenticators</string>
+
+    <string name="fido2_sample_pref_pass_mgmt_title">Passcode Management</string>
+    <string name="fido2_sample_create_passcode_key">create_passcode</string>
+    <string name="fido2_sample_create_passcode_title">Create Passcode</string>
+    <string name="fido2_sample_change_passcode_key">change_passcode</string>
+    <string name="fido2_sample_change_passcode_title">Change Passcode</string>
+    <string name="fido2_sample_delete_passcode_key">delete_passcode</string>
+    <string name="fido2_sample_delete_passcode_title">Delete Passcode</string>
+    <string name="fido2_sample_disable_scrambler_key">disable_scrambler</string>
+    <string name="fido2_sample_disable_scrambler_title">Disable scrambler</string>
+    <string name="fido2_sample_passcode_min_length_key">passcode_min_length</string>
+    <string name="fido2_sample_passcode_min_length_title">Min passcode length</string>
+    <string name="fido2_sample_passcode_max_length_key">passcode_max_length</string>
+    <string name="fido2_sample_passcode_max_length_title">Max passcode length</string>
+    <string name="fido2_sample_max_retry_key">max_retry</string>
+    <string name="fido2_sample_max_retry_title">Max Retry Count</string>
+    <string name="fido2_sample_base_lockout_key">base_lockout</string>
+    <string name="fido2_sample_base_lockout_title">Base lockout duration(s)</string>
+
+    <string name="fido2_sample_pref_sdk_title">SDK</string>
+    <string name="fido2_sample_share_logs_key">share_logs</string>
+    <string name="fido2_sample_share_logs_title">Share secure logs</string>
+    <string name="fido2_sample_reset_key">reset</string>
+    <string name="fido2_sample_reset_title">Reset</string>
+
+    <!-- Summary -->
+    <string name="fido2_sample_default_value_5_summary">The default value is 5.</string>
+    <string name="fido2_sample_default_value_6_summary">The default value is 6.</string>
+    <string name="fido2_sample_default_value_8_summary">The default value is 8.</string>
+    <string name="fido2_sample_default_value_30_summary">The default value is 30.</string>
+    <string name="fido2_sample_alert_dialog_edit_text">Please input a user name</string>
+
+    <!-- Secure Log -->
+    <string name="fido2_secure_log_file_id">fido2sampl</string>
+    <string name="show_logs">Show Logs</string>
+    <string name="hide_logs">Hide Logs</string>
+    <string name="fido2_sample_secureLog_email_content">Hi Thales Fido team,\n\nThe Sample application is failing.\nPlease check more detail in the attached log file.\n\nRegards,</string>
+    <string name="fido2_sample_securelog_chooser_title">Select an Email application to send the Logs</string>
+
+    <!-- Delete All Registered Authenticators -->
+    <string name="alert_reset">Reset</string>
+    <string name="reset_alert_message">Do you want to reset?</string>
+
+    <!-- Remove Authenticator  -->
+    <string name="removeauthenticator_alert_title">Remove Authenticator</string>
+    <string name="removeauthenticator_alert_message">Your authenticator has been removed.</string>
+
+    <!-- Copy logs -->
+    <string name="copied_text">Copied text</string>
+    <string name="copied_text_error">Something went wrong during operation</string>
+    <string name="edit">Edit</string>
+
+
+</resources>
