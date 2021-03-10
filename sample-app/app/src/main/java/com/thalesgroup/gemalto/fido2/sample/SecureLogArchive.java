@@ -70,7 +70,7 @@ public class SecureLogArchive {
     }
 
     public static String getEmailTitle(Context context) {
-        String title = BuildConfig.FLAVOR;
+        String title = BuildConfig.BUILD_TYPE;
         try {
             PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             title += " - " + pInfo.versionName;

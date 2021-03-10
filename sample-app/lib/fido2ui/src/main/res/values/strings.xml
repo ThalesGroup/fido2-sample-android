@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="retry_left">
+        <item quantity="one">Wrong Passcode. %d retry left.</item>
+        <item quantity="other">Wrong Passcode. %d retries left.</item>
+    </plurals>
+    <plurals name="lockout">
+        <item quantity="one">Try again in %d second.</item>
+        <item quantity="other">Try again in %d seconds.</item>
+    </plurals>
+    <string name="usage_default">Enter Your Passcode</string>
+    <string name="usage_new">Create Your Passcode</string>
+    <string name="usage_confirm">Confirm Your Passcode</string>
+    <string name="cancel_dialog_title">Do you want to cancel this operation?</string>
+    <string name="message_invalid_passcode">Invalid Passcode. Please re-enter your Passcode.</string>
+</resources>
