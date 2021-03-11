@@ -26,13 +26,18 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.thalesgroup.gemalto.fido2.Authenticate;
+import com.thalesgroup.gemalto.fido2.Fido2ErrorCode;
+import com.thalesgroup.gemalto.fido2.Fido2Exception;
 import com.thalesgroup.gemalto.fido2.Register;
 import com.thalesgroup.gemalto.fido2.client.Fido2Client;
 import com.thalesgroup.gemalto.fido2.client.Fido2ClientFactory;
+import com.thalesgroup.gemalto.fido2.client.Fido2Response;
 import com.thalesgroup.gemalto.fido2.sample.R;
 import com.thalesgroup.gemalto.fido2.sample.domain.logger.Logger;
 import com.thalesgroup.gemalto.fido2.sample.domain.logger.LoggerImpl;
 import com.thalesgroup.gemalto.fido2.sample.ui.adapter.LogRecyclerViewAdapter;
+import com.thalesgroup.gemalto.fido2.sample.util.JsonUtil;
+import com.thalesgroup.gemalto.fido2.ui.SamplePasscodeLockoutUi;
 
 import java.util.Objects;
 
@@ -185,8 +190,27 @@ public class HomeFragment extends Fragment {
                     } else {
                         alertDialog.dismiss();
                         // Call Register
-                        Register register = new Register(getActivity(), logger, userName);
-                        register.execute();
+                        executeRegister(new OnExecuteFinishListener() {
+                            @Override
+                            public void onSuccess(Fido2Response response) {
+                                showAlertDialog(getActivity().getString(R.string.register_alert_title), getActivity().getString(R.string.register_alert_message));
+                                logger.log("Registration Response:\n" + JsonUtil.prettyPrintJSON(response.raw()));
+                            }
+
+                            @Override
+                            public void onError(Fido2Exception exception) {
+                                // Recursively get the all exception message
+                                String errorMessage = exception.getMessage();
+                                Throwable ex = exception.getCause();
+                                while (ex != null) {
+                                    errorMessage+= "\n" + ex.getMessage();
+                                    ex = ex.getCause();
+                                }
+
+                                showAlertDialog(getActivity().getString(R.string.error_alert_title), "Fido2 Error: " + errorMessage);
+                                logger.log("Fido2 Error:\n" + errorMessage);
+                            }
+                        });
                     }
                 });
 
@@ -197,6 +221,11 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    private void executeRegister(final OnExecuteFinishListener regOnFinishListener) {
+        Register register = new Register(getActivity(), logger, userName);
+        register.execute(regOnFinishListener);
+    }
+
     public void authenticate() {
         // Create a Fido2 Client
         Fido2Client client = Fido2ClientFactory.createFido2Client(getActivity());
@@ -205,8 +234,36 @@ public class HomeFragment extends Fragment {
             showAlertDialog(getString(R.string.error_alert_title), getString(R.string.authenticate_alert_message_no_registration));
             return;
         }
+
+        OnExecuteFinishListener authOnFinishListener = new OnExecuteFinishListener() {
+            @Override
+            public void onSuccess(Fido2Response response) {
+                showAlertDialog(getActivity().getString(R.string.authenticate_alert_title), getActivity().getString(R.string.authenticate_alert_message));
+                logger.log("Authentication Response:\n" + JsonUtil.prettyPrintJSON(response.raw()));
+            }
+
+            @Override
+            public void onError(Fido2Exception exception) {
+                // Recursively get the all exception message
+                String errorMessage = exception.getMessage();
+                Throwable ex = exception.getCause();
+                while (ex != null) {
+                    errorMessage+= "\n" + ex.getMessage();
+                    ex = ex.getCause();
+                }
+
+                if (exception.getError() == Fido2ErrorCode.ERROR_USER_LOCKOUT) {
+                    new SamplePasscodeLockoutUi(getActivity()).showLockoutUi();
+                } else {
+                    showAlertDialog("Error", "Fido2 Error: " + errorMessage);
+                }
+
+                logger.log("Fido2 Error:\n" + errorMessage);
+            }
+        };
+
         Authenticate authenticate = new Authenticate(getActivity(), logger);
-        authenticate.execute();
+        authenticate.execute(authOnFinishListener);
     }
 
 
@@ -258,6 +315,11 @@ public class HomeFragment extends Fragment {
         } else {
             Toast.makeText(getContext(), getString(R.string.copied_text_error), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public interface OnExecuteFinishListener {
+        void onSuccess(Fido2Response response);
+        void onError(Fido2Exception exception);
     }
 
 }

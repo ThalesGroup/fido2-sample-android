@@ -4,6 +4,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.thalesgroup.gemalto.fido2.sample.Configuration;
 import com.thalesgroup.gemalto.fido2.sample.domain.logger.Logger;
+import com.thalesgroup.gemalto.fido2.sample.ui.fragment.HomeFragment;
 import com.thalesgroup.gemalto.fido2.sample.util.JsonUtil;
 
 import java.util.UUID;
@@ -19,7 +20,7 @@ public class Register {
         this.userName = userName;
     }
 
-    public void execute() {
+    public void execute(final HomeFragment.OnExecuteFinishListener listener) {
         new Thread(new Runnable() {
             @Override
             public void run() {
