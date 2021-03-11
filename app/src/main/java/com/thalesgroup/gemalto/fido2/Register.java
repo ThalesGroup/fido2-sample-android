@@ -53,13 +53,11 @@ public class Register {
                 logger.log("Registration Request:\n" + JsonUtil.prettyPrintJSON(jsonString));
 
 
-                //1: Create Registration request providing the required credentials.
+                // # 1: Create Registration request providing the required credentials. #
 
+                // # 2: Setup Fido2RespondArgs with UI callbacks #
 
-                //2: Setup Fido2RespondArgs with UI callbacks
-
-
-                //3: Retrieve the FIDO2 Registration response.
+                // # 3: Retrieve the FIDO2 Registration response. #
 
 
             }
