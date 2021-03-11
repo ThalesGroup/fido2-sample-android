@@ -21,15 +21,24 @@ android {
         }
     }
 
+    signingConfigs {
+        fido {
+            storeFile     file('sign.keystore')
+            storePassword 'thalesfido2'
+            keyAlias      'alias'
+            keyPassword   'thalesfido2'
+        }
+    }
 
     buildTypes {
         debug {
-
+            signingConfig signingConfigs.fido
         }
 
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.fido
         }
     }
 
@@ -45,6 +54,8 @@ android {
 }
 
 dependencies {
+    implementation project(":lib:fido2ui")
+
     implementation 'net.java.dev.jna:jna:5.5.0@aar'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
