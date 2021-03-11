@@ -30,11 +30,11 @@ public class Authenticate {
                 // Log Registration request json string into Log view.
                 logger.log("Authentication Request:\n" + JsonUtil.prettyPrintJSON(authReqMsg));
 
-                // # 1: Create Authentication request providing the required credentials. #
+                # 1: Create Authentication request providing the required credentials. #
 
-                // # 2: Setup Fido2RespondArgs with UI callbacks #
+                # 2: Setup Fido2RespondArgs with UI callbacks #
 
-                // # 3: Retrieve the FIDO2 Authentication response. #
+                # 3: Retrieve the FIDO2 Authentication response. #
 
             }
         }).start();
