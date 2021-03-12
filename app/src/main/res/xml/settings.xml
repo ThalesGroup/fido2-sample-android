@@ -1,0 +1,69 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory android:title="@string/fido2_sample_pref_auth_title">
+
+        <Preference
+            android:key="@string/fido2_sample_reg_authenticator_key"
+            android:title="@string/fido2_sample_reg_authenticator_title" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/fido2_sample_pref_pass_mgmt_title">
+
+        <Preference
+            android:key="@string/fido2_sample_create_passcode_key"
+            android:title="@string/fido2_sample_create_passcode_title" />
+        <Preference
+            android:key="@string/fido2_sample_change_passcode_key"
+            android:title="@string/fido2_sample_change_passcode_title" />
+
+        <Preference
+            android:key="@string/fido2_sample_delete_passcode_key"
+            android:title="@string/fido2_sample_delete_passcode_title" />
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="@string/fido2_sample_disable_scrambler_key"
+            android:title="@string/fido2_sample_disable_scrambler_title" />
+
+        <EditTextPreference
+            android:defaultValue="6"
+            android:inputType="number"
+            android:key="@string/fido2_sample_passcode_min_length_key"
+            android:summary="@string/fido2_sample_default_value_6_summary"
+            android:title="@string/fido2_sample_passcode_min_length_title" />
+
+        <EditTextPreference
+            android:defaultValue="8"
+            android:inputType="number"
+            android:key="@string/fido2_sample_passcode_max_length_key"
+            android:summary="@string/fido2_sample_default_value_8_summary"
+            android:title="@string/fido2_sample_passcode_max_length_title" />
+
+        <EditTextPreference
+            android:defaultValue="5"
+            android:inputType="number"
+            android:key="@string/fido2_sample_max_retry_key"
+            android:summary="@string/fido2_sample_default_value_5_summary"
+            android:title="@string/fido2_sample_max_retry_title" />
+
+        <EditTextPreference
+            android:defaultValue="30"
+            android:inputType="number"
+            android:key="@string/fido2_sample_base_lockout_key"
+            android:summary="@string/fido2_sample_default_value_30_summary"
+            android:title="@string/fido2_sample_base_lockout_title" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/fido2_sample_pref_sdk_title">
+        <Preference
+            android:key="@string/fido2_sample_share_logs_key"
+            android:title="@string/fido2_sample_share_logs_title" />
+        <Preference
+            android:key="@string/fido2_sample_reset_key"
+            android:title="@string/fido2_sample_reset_title" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
