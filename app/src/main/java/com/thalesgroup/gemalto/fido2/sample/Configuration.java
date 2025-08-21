@@ -11,9 +11,6 @@ public class Configuration {
 
     };
 
-    //SafetyNetAttestationKey. Get new key from here: https://developer.android.com/training/safetynet/attestation#obtain-api-key, and put below.
-    public final static String safetyNetAttestationKey = "";
-
     //Place your relying party address here
     public final static String rpId = "";
 }
