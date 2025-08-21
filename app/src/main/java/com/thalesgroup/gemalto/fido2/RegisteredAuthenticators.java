@@ -1,5 +1,7 @@
 package com.thalesgroup.gemalto.fido2;
 
+import android.widget.Toast;
+
 import androidx.fragment.app.FragmentActivity;
 
 import com.thalesgroup.gemalto.fido2.client.Fido2AuthenticatorRegistrationInfo;
@@ -16,7 +18,13 @@ public class RegisteredAuthenticators {
     }
 
     public List<Fido2AuthenticatorRegistrationInfo> execute() {
-        Fido2Client client = Fido2ClientFactory.createFido2Client(activity);
+        Fido2Client client = null;
+        try {
+            client = Fido2ClientFactory.createFido2Client(activity);
+            client.setActivity(activity);
+        } catch (Fido2Exception e) {
+            Toast.makeText(activity, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
         // To get the registered authenticators
         return client.authenticatorRegistrations();
     }

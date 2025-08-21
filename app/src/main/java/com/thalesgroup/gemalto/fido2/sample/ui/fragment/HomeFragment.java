@@ -139,19 +139,18 @@ public class HomeFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.show_logs:
-                //Store the status as 'false' into shared preference
-                storeLogStatusInPreference(false);
-                break;
-            case R.id.hide_logs:
-                //Store the status as 'true' into shared preference
-                storeLogStatusInPreference(true);
-                break;
+        int itemId = item.getItemId();
+
+        if (itemId == R.id.show_logs) {
+            storeLogStatusInPreference(false);
+        } else if (itemId == R.id.hide_logs) {
+            storeLogStatusInPreference(true);
         }
+
         logMenuShowOrHide();
         return super.onOptionsItemSelected(item);
     }
+
 
     @Override
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
@@ -228,7 +227,14 @@ public class HomeFragment extends Fragment {
 
     public void authenticate() {
         // Create a Fido2 Client
-        Fido2Client client = Fido2ClientFactory.createFido2Client(getActivity());
+        Fido2Client client = null;
+        try {
+            client = Fido2ClientFactory.createFido2Client(getActivity());
+            client.setActivity(getActivity());
+        } catch (Fido2Exception e) {
+            Toast.makeText(getActivity(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+
+        }
         // Get the registered authenticators and check the list is empty
         if (client.authenticatorRegistrations().isEmpty()) {
             showAlertDialog(getString(R.string.error_alert_title), getString(R.string.authenticate_alert_message_no_registration));
