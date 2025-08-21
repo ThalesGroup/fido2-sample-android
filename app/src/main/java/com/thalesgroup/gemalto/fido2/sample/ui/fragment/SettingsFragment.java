@@ -1,6 +1,11 @@
+/*
+ * Copyright © 2021-2022 THALES. All rights reserved.
+ */
+
 package com.thalesgroup.gemalto.fido2.sample.ui.fragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,15 +19,21 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
+import com.thalesgroup.gemalto.fido2.Fido2Exception;
 import com.thalesgroup.gemalto.fido2.authenticator.passcode.PasscodeAuthenticator;
 import com.thalesgroup.gemalto.fido2.authenticator.passcode.PasscodeAuthenticatorCallback;
 import com.thalesgroup.gemalto.fido2.authenticator.passcode.PasscodeConfig;
+import com.thalesgroup.gemalto.fido2.authenticator.passcode.PasscodeRule;
+import com.thalesgroup.gemalto.fido2.authenticator.passcode.PasscodeRuleLength;
+import com.thalesgroup.gemalto.fido2.authenticator.passcode.PasscodeRulePalindrome;
+import com.thalesgroup.gemalto.fido2.authenticator.passcode.PasscodeRuleSeries;
+import com.thalesgroup.gemalto.fido2.authenticator.passcode.PasscodeRuleUniform;
 import com.thalesgroup.gemalto.fido2.client.Fido2Client;
 import com.thalesgroup.gemalto.fido2.client.Fido2ClientFactory;
 import com.thalesgroup.gemalto.fido2.client.Fido2Config;
 import com.thalesgroup.gemalto.fido2.sample.R;
 import com.thalesgroup.gemalto.fido2.sample.SecureLogArchive;
-import com.thalesgroup.gemalto.fido2.ui.SamplePasscodeAuthenticatorCallback;
+import com.thalesgroup.gemalto.fido2.ui.SamplePinPadAuthenticatorCallback;
 
 import java.io.File;
 
@@ -107,12 +118,26 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
-        if(preference == minimumPasscodeLength) {
-            // To set the minimum passcode length
-            PasscodeConfig.setMinimumPasscodeLength(Integer.parseInt((String)newValue));
-        } else if(preference == maximumPasscodeLength) {
-            // To set the maximum passcode length
-            PasscodeConfig.setMaximumPasscodeLength(Integer.parseInt((String)newValue));
+        if(preference == minimumPasscodeLength || preference == maximumPasscodeLength) {
+            SharedPreferences preferences = getPreferenceManager().getSharedPreferences();
+            String minLengthStr = preferences.getString(getString(R.string.fido2_sample_passcode_min_length_key), null);
+            String maxLengthStr = preferences.getString(getString(R.string.fido2_sample_passcode_max_length_key), null);
+            PasscodeRuleLength passcodeRuleLength = new PasscodeRuleLength();
+            if (minLengthStr != null) {
+                passcodeRuleLength.setMinimumLength(Integer.parseInt(minLengthStr));
+            }
+            if (maxLengthStr != null) {
+                passcodeRuleLength.setMaximumLength(Integer.parseInt(maxLengthStr));
+            }
+            try {
+                PasscodeConfig.setPasscodeRules(new PasscodeRule[]{
+                        passcodeRuleLength,
+                        new PasscodeRulePalindrome(),
+                        new PasscodeRuleSeries(),
+                        new PasscodeRuleUniform(),
+                });
+            } catch (Fido2Exception e) {
+            }
         } else if(preference == maxRetryCount) {
             // To set the maximum retry count
             Fido2Config.setMaximumRetryCount(Integer.parseInt((String)newValue));
@@ -132,17 +157,17 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
             fragmentTransaction.addToBackStack("registeredAuthenticators");
             fragmentTransaction.commit();
         } else if(preference == createPasscode) {
-            passcodeAuthenticatorCallback = new SamplePasscodeAuthenticatorCallback(activity);
+            passcodeAuthenticatorCallback = new SamplePinPadAuthenticatorCallback(activity);
             passcodeAuthenticator = PasscodeAuthenticator.of(activity, passcodeAuthenticatorCallback);
             // To enroll the passcode authenticator
             passcodeAuthenticator.createPasscode();
         } else if(preference == changePasscode) {
-            passcodeAuthenticatorCallback = new SamplePasscodeAuthenticatorCallback(activity);
+            passcodeAuthenticatorCallback = new SamplePinPadAuthenticatorCallback(activity);
             passcodeAuthenticator = PasscodeAuthenticator.of(activity, passcodeAuthenticatorCallback);
             // To change the passcode authenticator
             passcodeAuthenticator.changePasscode();
         } else if(preference == deletePasscode) {
-            passcodeAuthenticatorCallback = new SamplePasscodeAuthenticatorCallback(activity);
+            passcodeAuthenticatorCallback = new SamplePinPadAuthenticatorCallback(activity);
             passcodeAuthenticator = PasscodeAuthenticator.of(activity, passcodeAuthenticatorCallback);
             // To unenroll the passcode authenticator
             passcodeAuthenticator.deletePasscode();
@@ -183,9 +208,17 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
                         dialog.dismiss();
                     })
                     .setPositiveButton(R.string.fido2_sample_reset_title, (dialog, which) -> {
-                        Fido2Client client = Fido2ClientFactory.createFido2Client(getActivity());
-                        // To delete all the registered authenticators
-                        client.reset();
+                        Fido2Client client = null;
+                        try {
+                            client = Fido2ClientFactory.createFido2Client(getContext());
+                            client.setActivity(getActivity());
+                            // To delete all the registered authenticators
+                            client.reset();
+                        } catch (Fido2Exception e) {
+
+                        }
+
+
                         dialog.dismiss();
                     })
                     .show();
