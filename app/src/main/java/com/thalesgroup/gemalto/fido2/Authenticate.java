@@ -2,24 +2,10 @@ package com.thalesgroup.gemalto.fido2;
 
 
 import androidx.fragment.app.FragmentActivity;
-
-import com.thalesgroup.gemalto.fido2.authenticator.biometric.BiometricAuthenticatorCallback;
-import com.thalesgroup.gemalto.fido2.authenticator.passcode.PasscodeAuthenticator;
-import com.thalesgroup.gemalto.fido2.authenticator.passcode.PasscodeAuthenticatorCallback;
-import com.thalesgroup.gemalto.fido2.client.Fido2Client;
-import com.thalesgroup.gemalto.fido2.client.Fido2ClientFactory;
-import com.thalesgroup.gemalto.fido2.client.Fido2Request;
-import com.thalesgroup.gemalto.fido2.client.Fido2RespondArgs;
-import com.thalesgroup.gemalto.fido2.client.Fido2Response;
-import com.thalesgroup.gemalto.fido2.client.Fido2ResponseCallback;
-import com.thalesgroup.gemalto.fido2.client.Fido2UiCallback;
 import com.thalesgroup.gemalto.fido2.sample.Configuration;
 import com.thalesgroup.gemalto.fido2.sample.domain.logger.Logger;
 import com.thalesgroup.gemalto.fido2.sample.ui.fragment.HomeFragment;
 import com.thalesgroup.gemalto.fido2.sample.util.JsonUtil;
-import com.thalesgroup.gemalto.fido2.ui.SampleBiometricAuthenticatorCallback;
-import com.thalesgroup.gemalto.fido2.ui.SampleFido2UiCallback;
-import com.thalesgroup.gemalto.fido2.ui.SamplePasscodeAuthenticatorCallback;
 
 public class Authenticate {
     private FragmentActivity activity;
