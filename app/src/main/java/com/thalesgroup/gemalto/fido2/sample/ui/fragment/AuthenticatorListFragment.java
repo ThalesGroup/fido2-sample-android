@@ -51,21 +51,21 @@ public class AuthenticatorListFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.edit_auth:
-                editAuth.setVisible(false);
-                cancel.setVisible(true);
-                recyclerViewAdapter.setEditModeOnOff(false);
-                break;
-            case R.id.cancel:
-                editAuth.setVisible(true);
-                cancel.setVisible(false);
-                recyclerViewAdapter.setEditModeOnOff(true);
-                break;
+        int itemId = item.getItemId();
+
+        if (itemId == R.id.edit_auth) {
+            editAuth.setVisible(false);
+            cancel.setVisible(true);
+            recyclerViewAdapter.setEditModeOnOff(false);
+        } else if (itemId == R.id.cancel) {
+            editAuth.setVisible(true);
+            cancel.setVisible(false);
+            recyclerViewAdapter.setEditModeOnOff(true);
         }
 
         return super.onOptionsItemSelected(item);
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
