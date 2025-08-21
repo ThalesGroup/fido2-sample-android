@@ -47,19 +47,17 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Fragment fragment = null;
+        int itemId = item.getItemId();
 
-        switch (item.getItemId()) {
-            case R.id.navigation_home:
-                fragment = HomeFragment.newInstance();
-                break;
-
-            case R.id.navigation_authenticators:
-                fragment = new SettingsFragment(this);
-                break;
+        if (itemId == R.id.navigation_home) {
+            fragment = HomeFragment.newInstance();
+        } else if (itemId == R.id.navigation_authenticators) {
+            fragment = new SettingsFragment(this);
         }
 
         return loadFragment(fragment);
     }
+
 
     private boolean loadFragment(Fragment fragment) {
         if (fragment != null) {
