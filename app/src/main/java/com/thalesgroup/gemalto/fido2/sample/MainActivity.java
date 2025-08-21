@@ -12,7 +12,6 @@ import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.thalesgroup.gemalto.fido2.client.Fido2Config;
-import com.thalesgroup.gemalto.fido2.rasp.Rasp;
 import com.thalesgroup.gemalto.fido2.sample.ui.fragment.HomeFragment;
 import com.thalesgroup.gemalto.fido2.sample.ui.fragment.SettingsFragment;
 import com.thalesgroup.gemalto.securelog.SecureLogConfig;
@@ -28,15 +27,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         PreferenceManager.getDefaultSharedPreferences(this).edit().clear().apply();
 
-        //Setup the RASP Config
-        Rasp.configure(Rasp.TYPE_DEBUGGER
-                        | Rasp.TYPE_ROOT
-                        | Rasp.TYPE_HOOK
-                        | Rasp.TYPE_VIRTUAL_ENVIRONMENT_DETECTION
-                        | Rasp.TYPE_TAMPER
-                        | Rasp.TYPE_EMULATOR
-                , Rasp.MODE_CRASH);
-
         //getting bottom navigation view and attaching the listener
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(this);
@@ -49,9 +39,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 .build();
 
         SecureLogArchive.mSecureLog = Fido2Config.setUpSecureLog(secureLogConfig);
-
-        //Set safetyNet Attestation Key. Please refer the Configuration.java
-        Fido2Config.setAttestationKey(Configuration.safetyNetAttestationKey);
 
         //loading the default fragment
         loadFragment(HomeFragment.newInstance());
