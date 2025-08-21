@@ -1,3 +1,7 @@
+/*
+ * Copyright © 2021 THALES. All rights reserved.
+ */
+
 package com.thalesgroup.gemalto.fido2.sample.ui.adapter;
 
 import androidx.appcompat.app.AlertDialog;
@@ -10,7 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.thalesgroup.gemalto.fido2.Fido2Exception;
 import com.thalesgroup.gemalto.fido2.client.Fido2AuthenticatorRegistrationInfo;
 import com.thalesgroup.gemalto.fido2.client.Fido2Client;
 import com.thalesgroup.gemalto.fido2.client.Fido2ClientFactory;
@@ -49,10 +55,14 @@ public class AuthenticatorRecyclerViewAdapter extends RecyclerView.Adapter<Authe
             case PASSCODE:
                 holder.imgAuthenticator.setImageResource(R.drawable.ic_dialpad);
                 break;
-            case PROPRIETARY_BIOMETRIC:
-            case EMBEDDED_BIOMETRIC:
+            case BIOMETRIC:
                 holder.imgAuthenticator.setImageResource(R.drawable.ic_fingerprint);
                 break;
+            case PLATFORM:
+                holder.imgAuthenticator.setImageResource(R.drawable.ic_fingerprint);
+                break;
+            case PLATFORM_LOCAL:
+                holder.imgAuthenticator.setImageResource(R.drawable.ic_fingerprint);
             default:
                 break;
         }
@@ -64,9 +74,17 @@ public class AuthenticatorRecyclerViewAdapter extends RecyclerView.Adapter<Authe
             @Override
             public void onClick(View view) {
                 // Create a Fido2 Client
-                Fido2Client client = Fido2ClientFactory.createFido2Client(activity);
-                // Delete the selected authenticator
-                client.deleteAuthenticatorRegistration(info);
+                Fido2Client client = null;
+                try {
+                    client = Fido2ClientFactory.createFido2Client(activity.getApplicationContext());
+                    client.setActivity(activity);
+                    // Delete the selected authenticator
+                    client.deleteAuthenticatorRegistration(info);
+                } catch (Fido2Exception e) {
+                    Toast.makeText(activity, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
+
                 updateRegistrationInfo();
                 showAlertDialog(activity.getString(R.string.removeauthenticator_alert_title), activity.getString(R.string.removeauthenticator_alert_message), false);
             }
@@ -97,7 +115,13 @@ public class AuthenticatorRecyclerViewAdapter extends RecyclerView.Adapter<Authe
 
     public void updateRegistrationInfo() {
         // Create a Fido2 Client
-        Fido2Client client = Fido2ClientFactory.createFido2Client(activity);
+        Fido2Client client = null;
+        try {
+            client = Fido2ClientFactory.createFido2Client(activity.getApplicationContext());
+            client.setActivity(activity);
+        } catch (Fido2Exception e) {
+            Toast.makeText(activity, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
         // Get the registered authenticators
         registrationInfoList = client.authenticatorRegistrations();
         notifyDataSetChanged();
