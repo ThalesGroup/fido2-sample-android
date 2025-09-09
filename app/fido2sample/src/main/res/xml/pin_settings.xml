@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="@string/fido2_sample_disable_scrambler_title"
-        android:title="@string/fido2_sample_disable_scrambler_title" />
+    <Preference
+        android:key="empty_space"
+        android:title=" "
+        android:summary=" "
+        android:selectable="false" />
 
     <SwitchPreference
         android:defaultValue="false"
