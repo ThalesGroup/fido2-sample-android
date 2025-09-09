@@ -1,2 +1,3 @@
 include ':app'
 include ':lib:fido2ui'
+include ':app:fido2sample'

@@ -3,6 +3,11 @@
 
     <SwitchPreference
         android:defaultValue="false"
+        android:key="@string/fido2_sample_disable_scrambler_title"
+        android:title="@string/fido2_sample_disable_scrambler_title" />
+
+    <SwitchPreference
+        android:defaultValue="false"
         android:key="@string/fido2_sample_disable_scrambler_key"
         android:title="@string/fido2_sample_disable_scrambler_title" />
 
