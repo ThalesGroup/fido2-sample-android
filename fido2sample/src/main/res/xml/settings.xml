@@ -1,0 +1,54 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory android:title="@string/fido2_sample_pref_auth_title">
+
+        <Preference
+            android:key="@string/fido2_sample_reg_authenticator_key"
+            android:title="@string/fido2_sample_reg_authenticator_title" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/fido2_sample_pref_pass_mgmt_title">
+
+        <Preference
+            android:key="@string/fido2_sample_create_passcode_key"
+            android:title="@string/fido2_sample_create_passcode_title" />
+        <Preference
+            android:key="@string/fido2_sample_change_passcode_key"
+            android:title="@string/fido2_sample_change_passcode_title" />
+
+        <Preference
+            android:key="@string/fido2_sample_delete_passcode_key"
+            android:title="@string/fido2_sample_delete_passcode_title" />
+
+        <Preference
+            android:key="@string/pref_key_passcode_rules_set"
+            android:title="@string/pref_key_passcode_rules_set" />
+
+        <EditTextPreference
+            android:defaultValue="5"
+            android:inputType="numberDecimal"
+            android:key="@string/fido2_sample_max_retry_key"
+            android:summary="@string/fido2_sample_default_value_5_summary"
+            android:title="@string/fido2_sample_max_retry_title" />
+
+        <EditTextPreference
+            android:defaultValue="30"
+            android:inputType="numberDecimal"
+            android:key="@string/fido2_sample_base_lockout_key"
+            android:summary="@string/fido2_sample_default_value_30_summary"
+            android:title="@string/fido2_sample_base_lockout_title" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/fido2_sample_pref_sdk_title">
+        <Preference
+            android:key="@string/fido2_sample_share_logs_key"
+            android:title="@string/fido2_sample_share_logs_title" />
+        <Preference
+            android:key="@string/fido2_sample_reset_key"
+            android:title="@string/fido2_sample_reset_title" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
