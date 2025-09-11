@@ -42,13 +42,13 @@ class AuthenticatorListFragment : Fragment() {
             R.id.edit_auth -> {
                 editAuth?.setVisible(false)
                 cancel?.setVisible(true)
-                recyclerViewAdapter?.setEditModeOnOff(false)
+                recyclerViewAdapter?.setEditModeOnOff(true)
             }
 
             R.id.cancel -> {
                 editAuth?.setVisible(true)
                 cancel?.setVisible(false)
-                recyclerViewAdapter?.setEditModeOnOff(true)
+                recyclerViewAdapter?.setEditModeOnOff(false)
             }
         }
 

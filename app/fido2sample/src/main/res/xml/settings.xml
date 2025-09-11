@@ -1,6 +1,12 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <Preference
+        android:key="empty_space"
+        android:title=" "
+        android:summary=" "
+        android:selectable="false" />
+
     <PreferenceCategory android:title="@string/fido2_sample_pref_auth_title">
 
         <Preference

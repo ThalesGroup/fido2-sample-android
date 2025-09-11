@@ -3,170 +3,95 @@
  */
 package com.thalesgroup.gemalto.fido2.sample.ui.adapter
 
-import android.content.DialogInterface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
+import android.widget.Button
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.thalesgroup.gemalto.fido2.Fido2Exception
 import com.thalesgroup.gemalto.fido2.client.Fido2AuthenticatorRegistrationInfo
-import com.thalesgroup.gemalto.fido2.client.Fido2Client
 import com.thalesgroup.gemalto.fido2.client.Fido2ClientFactory
-import com.thalesgroup.gemalto.fido2.client.VerifyMethod
 import com.thalesgroup.gemalto.fido2.sample.R
 import com.thalesgroup.gemalto.fido2.sample.util.Base64
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 
 class AuthenticatorRecyclerViewAdapter(
     private val activity: FragmentActivity,
     private var registrationInfoList: MutableList<Fido2AuthenticatorRegistrationInfo>
-) : RecyclerView.Adapter<AuthenticatorRecyclerViewAdapter.ViewHolder?>() {
-    private var isEditModeEnable = true
+) : RecyclerView.Adapter<AuthenticatorRecyclerViewAdapter.ViewHolder>() {
+
+    private var isEditModeEnabled = false
+
+    override fun getItemViewType(position: Int): Int {
+        return if (position == 0) 0 else 1
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.fragment_authenticator_list, parent, false)
-        return this.ViewHolder(view)
+        val layout = if (viewType == 0)
+            R.layout.item_authenticator_first
+        else
+            R.layout.item_authenticator_normal
+        val view = LayoutInflater.from(parent.context).inflate(layout, parent, false)
+        return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val info: Fido2AuthenticatorRegistrationInfo = registrationInfoList.get(position)
-        val rpIdHash = Base64.encodeToString(
-            info.getRpIdHash(),
-            Base64.URL_SAFE or Base64.NO_WRAP or Base64.NO_PADDING
-        )
-        val credentialId = Base64.encodeToString(
-            info.getCredentialId(),
-            Base64.URL_SAFE or Base64.NO_WRAP or Base64.NO_PADDING
-        )
+        val info = registrationInfoList[position]
+        val base64Flags = Base64.URL_SAFE or Base64.NO_WRAP or Base64.NO_PADDING
 
-        holder.authenticatorCredId.setText(credentialId)
-        holder.authenticatorRpIdHash.setText(rpIdHash)
-        when (info.getVerifyMethod()) {
-            VerifyMethod.PASSCODE -> holder.imgAuthenticator.setImageResource(R.drawable.ic_dialpad)
-            VerifyMethod.BIOMETRIC -> holder.imgAuthenticator.setImageResource(R.drawable.ic_fingerprint)
-            VerifyMethod.PLATFORM -> holder.imgAuthenticator.setImageResource(R.drawable.ic_platform)
-            VerifyMethod.PLATFORM_LOCAL -> holder.imgAuthenticator.setImageResource(R.drawable.ic_platform_local)
-            else -> {}
-        }
+        val rpIdHash = Base64.encodeToString(info.rpIdHash, base64Flags)
+        val credentialId = Base64.encodeToString(info.credentialId, base64Flags)
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
 
-        holder.imgRemove.setVisibility(if (isEditModeEnable) View.GONE else View.VISIBLE)
+        holder.tvAuth.text = info.name
+        holder.tvRp.text = rpIdHash
+        holder.tvCred.text = credentialId
+        holder.tvUserName.text = info.userName
+        holder.tvUserDisplayName.text = info.userDisplayName
+        holder.tvRpId.text = info.rpId
+        holder.tvCreationDate.text = info.creationDate?.let { dateFormat.format(it) } ?: ""
+        holder.tvLastTimeUsed.text = info.lastUsedDate?.let { dateFormat.format(it) } ?: ""
 
-        //Delete Authenticator
-        holder.imgRemove.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(view: View?) {
-                // Create a Fido2 Client
-                var client: Fido2Client? = null
-                try {
-                    client = Fido2ClientFactory.createFido2Client(activity.getApplicationContext())
-                    client.setActivity(activity)
-                    // Delete the selected authenticator
-                    client.deleteAuthenticatorRegistration(info)
-                } catch (e: Fido2Exception) {
-                    showAlertDialog(
-                        activity.getString(R.string.error_alert_title),
-                        e.message ?: activity.getString(R.string.error_alert_title),
-                        false
-                    )
-                }
+        // Show/hide delete button based on edit mode
+        holder.btnDelete.visibility = if (isEditModeEnabled) View.VISIBLE else View.GONE
 
-
+        holder.btnDelete.setOnClickListener {
+            try {
+                val client = Fido2ClientFactory.createFido2Client(activity.applicationContext)
+                client.setActivity(activity)
+                client.deleteAuthenticatorRegistration(info)
                 updateRegistrationInfo()
-                showAlertDialog(
-                    activity.getString(R.string.removeauthenticator_alert_title),
-                    activity.getString(R.string.removeauthenticator_alert_message),
-                    false
-                )
-            }
-        })
-
-        val createdTimestamp = info.creationDate
-        val lastUsedTimestamp = info.lastUsedDate
-
-        holder.createdTextView.text = "Created: ${formatDate(createdTimestamp)}"
-        holder.lastUsedTextView.text = "Last Used: ${formatDate(lastUsedTimestamp)}"
-
-    }
-
-    override fun getItemCount(): Int {
-        return registrationInfoList.size
-    }
-
-    inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(
-        mView
-    ) {
-        val imgAuthenticator: ImageView
-        val authenticatorCredId: TextView
-        val authenticatorRpIdHash: TextView
-        val imgRemove: ImageView
-        val createdTextView: TextView
-        val lastUsedTextView: TextView
-
-        init {
-            imgAuthenticator = mView.findViewById<View?>(R.id.img_authenticator_icon) as ImageView
-            authenticatorCredId =
-                mView.findViewById<View?>(R.id.txt_authenticator_credId) as TextView
-            authenticatorRpIdHash =
-                mView.findViewById<View?>(R.id.txt_authenticator_rpId) as TextView
-            imgRemove = mView.findViewById<View?>(R.id.img_delete_icon) as ImageView
-            createdTextView = mView.findViewById(R.id.txt_authenticator_created)
-            lastUsedTextView = mView.findViewById(R.id.txt_authenticator_last_used)
+            } catch (_: Fido2Exception) {}
         }
+    }
+
+    override fun getItemCount(): Int = registrationInfoList.size
+
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val tvAuth: TextView = view.findViewById(R.id.tv_auth)
+        val tvRp: TextView = view.findViewById(R.id.tv_rp)
+        val tvCred: TextView = view.findViewById(R.id.tv_cred)
+        val tvUserName: TextView = view.findViewById(R.id.tv_user_name)
+        val tvUserDisplayName: TextView = view.findViewById(R.id.tv_user_display_name)
+        val tvRpId: TextView = view.findViewById(R.id.tv_rp_id)
+        val tvCreationDate: TextView = view.findViewById(R.id.tv_creation_date)
+        val tvLastTimeUsed: TextView = view.findViewById(R.id.tv_last_time_used)
+        val btnDelete: Button = view.findViewById(R.id.btm_delete)
+    }
+
+    fun setEditModeOnOff(enabled: Boolean) {
+        isEditModeEnabled = enabled
+        notifyDataSetChanged()
     }
 
     fun updateRegistrationInfo() {
-        // Create a Fido2 Client
-        var client: Fido2Client? = null
-        try {
-            client = Fido2ClientFactory.createFido2Client(activity.getApplicationContext())
-            client.setActivity(activity)
-        } catch (e: Fido2Exception) {
-        }
-        // Get the registered authenticators
-        registrationInfoList = client?.authenticatorRegistrations() ?: mutableListOf()
+        val client = try {
+            Fido2ClientFactory.createFido2Client(activity.applicationContext).apply { setActivity(activity) }
+        } catch (_: Fido2Exception) { null }
+        registrationInfoList = client?.authenticatorRegistrations()?.toMutableList() ?: mutableListOf()
         notifyDataSetChanged()
-    }
-
-
-    protected fun showAlertDialog(title: String?, message: String?, popBack: Boolean) {
-        activity.runOnUiThread(object : Runnable {
-            override fun run() {
-                val alertDialogBuilder = AlertDialog.Builder(activity)
-                    .setTitle(title)
-                    .setMessage(message)
-                    .setPositiveButton(
-                        android.R.string.ok,
-                        object : DialogInterface.OnClickListener {
-                            override fun onClick(dialogInterface: DialogInterface, i: Int) {
-                                dialogInterface.dismiss()
-                                if (popBack) {
-                                    // Back to the Settings Fragment
-                                    activity.getSupportFragmentManager().popBackStack()
-                                }
-                            }
-                        })
-
-                val alertDialog = alertDialogBuilder.create()
-                alertDialog.setCanceledOnTouchOutside(false)
-                alertDialog.show()
-            }
-        })
-    }
-
-    fun setEditModeOnOff(mode: Boolean) {
-        isEditModeEnable = mode
-        notifyDataSetChanged()
-    }
-
-    private fun formatDate(date: Date?): String {
-        if (date == null) return "N/A"
-        val formatter = SimpleDateFormat("dd MMM yyyy 'at' hh:mma", Locale.getDefault())
-        return formatter.format(date)
     }
 }
