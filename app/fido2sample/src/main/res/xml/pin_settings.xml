@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference
+        android:key="empty_space"
+        android:title=" "
+        android:summary=" "
+        android:selectable="false" />
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="@string/fido2_sample_disable_scrambler_key"
+        android:title="@string/fido2_sample_disable_scrambler_title" />
+
+    <EditTextPreference
+        android:defaultValue="6"
+        android:inputType="numberDecimal"
+        android:key="@string/fido2_sample_passcode_min_length_key"
+        android:summary="@string/fido2_sample_default_value_6_summary"
+        android:title="@string/fido2_sample_passcode_min_length_title" />
+
+    <EditTextPreference
+        android:defaultValue="8"
+        android:inputType="numberDecimal"
+        android:key="@string/fido2_sample_passcode_max_length_key"
+        android:summary="@string/fido2_sample_default_value_8_summary"
+        android:title="@string/fido2_sample_passcode_max_length_title"/>
+
+    <PreferenceCategory
+        android:title="Passcode Rules">
+
+        <CheckBoxPreference
+            android:title="Length"
+            android:defaultValue="true"
+            android:key="@string/pref_key_passcode_rules_length" />
+
+        <CheckBoxPreference
+            android:title="Uniform"
+            android:defaultValue="true"
+            android:key="@string/pref_key_passcode_rules_uniform" />
+
+        <CheckBoxPreference
+            android:title="Series"
+            android:defaultValue="true"
+            android:key="@string/pref_key_passcode_rules_series" />
+
+        <CheckBoxPreference
+            android:title="Palindrome"
+            android:defaultValue="true"
+            android:key="@string/pref_key_passcode_rules_palindrome" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

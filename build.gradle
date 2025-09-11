@@ -1,17 +1,33 @@
-buildscript { 
-	repositories { 
+buildscript {
+	ext.kotlin_version = '1.9.24'
+	repositories {
 		google()
-		jcenter()
+		mavenCentral()
 	}
-
-	dependencies { classpath 'com.android.tools.build:gradle:8.9.2' }
+	dependencies {
+		classpath 'com.android.tools.build:gradle:8.9.2'
+		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+		classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.8.9'
+	}
+	System.setProperty("dexguard.license", "${projectDir}/dexguard-license.txt")
 }
 
-allprojects { 
-	repositories { 
+plugins {
+	id 'jacoco'
+}
+
+allprojects {
+	repositories {
 		google()
-		jcenter()
-		flatDir { dir "${rootProject.projectDir}/lib/fido2" }
+		mavenCentral()
+		flatDir { dirs 'src/libs' }
+	}
+
+	ext {
+		compileSdkVersion = 35
+		minSdkVersion = 26
+		targetSdkVersion = 35
+		libsPath = "${projectDir}/libs"
 	}
 }
 
