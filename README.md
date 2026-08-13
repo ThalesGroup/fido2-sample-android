@@ -46,13 +46,3 @@ Please contact your Thales representative to obtain your JFrog Artifactory token
 ```bash
 ./gradlew :app:fido2sample:assembleDebug
 ```
-
-## What's new in 4.1.0
-
-- **Credential Provider / passkey support** — `CredentialProviderService` and
-  `PasskeyHandlerActivity` are registered in the manifest (backing resources are provided by the
-  `fido2ui` library).
-- **Custom AAGUID override** via `Fido2Config.setAuthenticatorAaguid(...)`.
-- **PIN lockout handling** with `SamplePasscodeLockoutUi` and `Fido2ErrorCode.ERROR_USER_LOCKOUT`.
-- **EULA / Privacy Policy** consent flow (`SamplePersistence`, `Configuration.CFG_EULA_URL`,
-  `Configuration.CFG_PRIVACY_POLICY_URL`).
