@@ -63,7 +63,10 @@ android {
 }
 
 dependencies {
-    implementation project(":lib:fido2ui")
+    // Mobile FIDO SDK + UI SDK, pulled from Thales JFrog Artifactory (see root build.gradle).
+    implementation "com.thalesgroup.gemalto.fido2:fido2:4.1.0@aar"
+    implementation "com.thalesgroup.gemalto.fido2:fido2ui:4.1.0@aar"
+
     implementation 'androidx.recyclerview:recyclerview:1.4.0'
     implementation 'androidx.core:core-ktx:1.17.0'
 

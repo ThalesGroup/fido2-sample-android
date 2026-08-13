@@ -11,11 +11,27 @@ Credential Provider (passkey) support**.
 
 ## Prerequisites
 
-Please contact your Thales representative to obtain the SDK artifacts and the values below.
+Please contact your Thales representative to obtain your JFrog Artifactory token and the values below.
 
-1. **Drop the SDK artifacts into `lib/`.** Place the `fido2` and `fido2ui` AAR artifacts where
-   `lib/copy_libs_here` indicates, so the `:lib:fido2ui` module and the `:app:fido2sample`
-   dependencies resolve.
+1. **Download the SDK from Thales JFrog Artifactory.** The Mobile FIDO SDK and UI SDK are
+   distributed as Maven artifacts from the public Artifactory repository — no local AARs required.
+
+   Provide your Artifactory token via an environment variable:
+
+   ```bash
+   export JFROG_URL_MAVEN=https://thalescpliam.jfrog.io/artifactory/onegini-sdk
+   export JFROG_TOKEN=YOUR_ARTIFACTORY_TOKEN
+   ```
+
+   or via `gradle.properties` (`JFROG_URL_MAVEN` is already set to the public path there; just add
+   `JFROG_TOKEN=...` — do **not** commit a real token). The repository is wired up in the root
+   `build.gradle`, and the dependencies are declared in `app/fido2sample/build.gradle`:
+
+   ```gradle
+   implementation "com.thalesgroup.gemalto.fido2:fido2:4.1.0@aar"
+   implementation "com.thalesgroup.gemalto.fido2:fido2ui:4.1.0@aar"
+   ```
+
 2. **Fill in `app/fido2sample/src/main/kotlin/.../sample/Configuration.kt`:**
    - `publicKeyModulus` and `publicKeyExponent` — the public key used to initialise Secure Log.
    - `rpId` — your relying party ID (defaults to the public demo RP `genuflecto.github.io`).

@@ -20,7 +20,27 @@ allprojects {
 	repositories {
 		google()
 		mavenCentral()
-		flatDir { dirs 'src/libs' }
+
+		// Mobile FIDO SDK is distributed via Thales JFrog Artifactory (public Maven repo).
+		// The repository URL defaults to the public path below; provide your Artifactory
+		// token via the JFROG_TOKEN environment variable or a gradle.properties entry.
+		def jfrogUrl = System.getenv("JFROG_URL_MAVEN") ?: project.findProperty("JFROG_URL_MAVEN") ?: "https://thalescpliam.jfrog.io/artifactory/onegini-sdk"
+		def jfrogToken = System.getenv("JFROG_TOKEN") ?: project.findProperty("JFROG_TOKEN")
+
+		if (!jfrogToken) {
+			throw new GradleException("Missing JFROG configuration! Provide JFROG_TOKEN (and optionally JFROG_URL_MAVEN) via an environment variable or gradle.properties.")
+		}
+
+		maven {
+			url = jfrogUrl
+			credentials(HttpHeaderCredentials) {
+				name = "Authorization"
+				value = "Bearer " + jfrogToken
+			}
+			authentication {
+				header(HttpHeaderAuthentication)
+			}
+		}
 	}
 
 	ext {
