@@ -55,6 +55,9 @@
         <Preference
             android:key="@string/fido2_sample_reset_key"
             android:title="@string/fido2_sample_reset_title" />
+        <Preference
+            android:key="@string/fido2_sample_privacy_policy_key"
+            android:title="@string/fido2_sample_privacy_policy_title" />
     </PreferenceCategory>
 
 </PreferenceScreen>

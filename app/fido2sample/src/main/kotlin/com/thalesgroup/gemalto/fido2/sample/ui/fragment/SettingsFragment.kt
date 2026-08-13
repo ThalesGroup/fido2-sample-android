@@ -20,6 +20,7 @@ import com.thalesgroup.gemalto.fido2.authenticator.passcode.PasscodeAuthenticato
 import com.thalesgroup.gemalto.fido2.authenticator.passcode.PasscodeAuthenticatorCallback
 import com.thalesgroup.gemalto.fido2.client.Fido2ClientFactory
 import com.thalesgroup.gemalto.fido2.client.Fido2Config
+import com.thalesgroup.gemalto.fido2.sample.Configuration
 import com.thalesgroup.gemalto.fido2.sample.R
 import com.thalesgroup.gemalto.fido2.sample.SecureLogArchive
 import com.thalesgroup.gemalto.fido2.sample.ui.fragment.AuthenticatorListFragment.Companion.newInstance
@@ -38,6 +39,8 @@ class SettingsFragment(private val activity: FragmentActivity) : PreferenceFragm
     private var baseLockoutDuration: Preference? = null
     private var shareSecureLogs: Preference? = null
     private var reset: Preference? = null
+
+    private var privacyPolicy: Preference? = null
     private var setPasscodeRule: Preference? = null
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -84,6 +87,9 @@ class SettingsFragment(private val activity: FragmentActivity) : PreferenceFragm
         // Delete all the registered authenticators
         reset = findPreference(getString(R.string.fido2_sample_reset_key))
         reset?.setOnPreferenceClickListener(this)
+
+        privacyPolicy = findPreference(getString(R.string.fido2_sample_privacy_policy_key))
+        privacyPolicy?.setOnPreferenceClickListener(this)
     }
 
     override fun onPreferenceChange(preference: Preference, newValue: Any?): Boolean {
@@ -189,8 +195,19 @@ class SettingsFragment(private val activity: FragmentActivity) : PreferenceFragm
                     .addToBackStack("pinSettings")
                     .commit()
             }
+            privacyPolicy -> {
+                onTextClickedPrivacyPolicy()
+            }
         }
         return true
+    }
+
+    private fun onTextClickedPrivacyPolicy() {
+        val browserIntent = Intent(
+            Intent.ACTION_VIEW,
+            Configuration.CFG_PRIVACY_POLICY_URL
+        )
+        startActivity(browserIntent)
     }
 
     private fun refreshFragment() {

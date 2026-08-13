@@ -17,15 +17,10 @@ object AppUtils {
 
     @JvmStatic
     fun getPinningCertificates(context: Context): Array<X509Certificate?> {
-        val certificates = arrayOfNulls<X509Certificate>(1)
-
-
-        /* Example on how to add more certs
-       certificates[0] = AppUtils.getCertificate(context, R.raw.leaf_cert);
-        certificates[1] = AppUtils.getCertificate(context, R.raw.intermediate_cert);*/
-        certificates[0] = getCertificate(context, R.raw.intermediate_cert)
-
-        return certificates
+        return arrayOf(
+            getCertificate(context, R.raw.yr1),
+            getCertificate(context, R.raw.root_yr),
+        )
     }
 
     private fun getCertificate(context: Context, resId: Int): X509Certificate? {

@@ -44,6 +44,8 @@
     <string name="fido2_sample_share_logs_title">Share secure logs</string>
     <string name="fido2_sample_reset_key">reset</string>
     <string name="fido2_sample_reset_title">Reset</string>
+    <string name="fido2_sample_privacy_policy_key">privacy_policy</string>
+    <string name="fido2_sample_privacy_policy_title">Privacy Policy</string>
     <string name="pref_key_passcode_rules_set">Set Passcode Rules</string>
     <string name="fido2_keyboard_scramble">Disable Keyboard Scramble</string>
     <string name="pref_key_passcode_rules_length">Passcode Length Rule</string>
@@ -82,5 +84,10 @@
     <string name="copied_text_error">Something went wrong during operation</string>
     <string name="edit">Edit</string>
 
+    <!-- EULA strings -->
+    <string name="fido2_sample_eula_title">EULA</string>
+    <string name="fido2_sample_eula_message">By continuing, you agree that you have read and accepted the EULA.</string>
+    <string name="fido2_sample_eula_proceed">Take me there</string>
+    <string name="fido2_sample_alert_cancel">Cancel</string>
 
 </resources>
