@@ -20,7 +20,7 @@ object Configuration {
     )
 
     // Fido2 rpId, Replace this value to your own rpId
-    const val rpId: String = "genuflecto.github.io"
+    const val rpId: String = ""
 
     // Custom AAGUID override values.
     // Leave as null to use the SDK defaults. Set to your own AAGUID string only if
@@ -34,5 +34,5 @@ object Configuration {
 
     // URL to EULA page shown to the end user.
     val CFG_EULA_URL: Uri
-        get() = "https://docs-cybersec.thalesgroup.com/bundle/latest-idcloud-fido/page/docs/tnc/mobile/eula-idcloud-fido-sample.html".toUri()
+        get() = "https://cpl.thalesgroup.com/legal".toUri()
 }

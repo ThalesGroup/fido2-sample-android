@@ -34,12 +34,11 @@ Please contact your Thales representative to obtain your JFrog Artifactory token
 
 2. **Fill in `app/fido2sample/src/main/kotlin/.../sample/Configuration.kt`:**
    - `publicKeyModulus` and `publicKeyExponent` — the public key used to initialise Secure Log.
-   - `rpId` — your relying party ID (defaults to the public demo RP `genuflecto.github.io`).
+   - `rpId` — your relying party ID.
    - Optionally `customBiometricAaguid` / `customPasscodeAaguid` if your deployment needs custom
      authenticator AAGUIDs (leave `null` for the SDK defaults).
-3. **Replace the TLS pinning certificates** in `app/fido2sample/src/main/res/raw/`
-   (`root_yr.cer`, `yr1.cer`) with the certificates of your own backend. See
-   `AppUtils.getPinningCertificates()`.
+3. **Add your TLS pinning certificates** in `app/fido2sample/src/main/res/raw/` and reference them
+   in `AppUtils.getPinningCertificates()`.
 
 ## Build
 

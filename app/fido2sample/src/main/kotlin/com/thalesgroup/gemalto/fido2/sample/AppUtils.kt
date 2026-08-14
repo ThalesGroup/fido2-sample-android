@@ -17,12 +17,13 @@ object AppUtils {
 
     @JvmStatic
     fun getPinningCertificates(context: Context): Array<X509Certificate?> {
-        return arrayOf(
-            getCertificate(context, R.raw.yr1),
-            getCertificate(context, R.raw.root_yr),
-        )
+        // Add your own backend's TLS pinning certificates here, e.g.:
+        //   return arrayOf(getCertificate(context, R.raw.your_cert))
+        // Place the certificate files under app/fido2sample/src/main/res/raw/.
+        return emptyArray()
     }
 
+    @Suppress("unused")
     private fun getCertificate(context: Context, resId: Int): X509Certificate? {
         var certificate: X509Certificate? = null
         var caInput: InputStream? = null
